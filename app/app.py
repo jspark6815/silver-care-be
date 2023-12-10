@@ -29,4 +29,4 @@ if __name__ == "__main__":
     
     # app.run(host="0.0.0.0", debug=True, port=3000)
 
-    socketio.run(app, host="0.0.0.0", debug=True, port=3000)
+    socketio.run(app, host="0.0.0.0", debug=True, port=3000, allow_unsafe_werkzeug=True)
