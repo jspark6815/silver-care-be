@@ -25,4 +25,4 @@ class CommUtil():
     def findOne(self, col:Collation, data):
         return col.find_one(data)
     def findList(self, col:Collation, data):
-        return col.find(data)
+        return list(col.find(data, {'_id': False}))

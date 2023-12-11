@@ -9,23 +9,31 @@ Task = Namespace(
 )
 
 task_model = Task.model('Tasks', {
-    'datetime': fields.DateTime(description='datetime', example=datetime.now()),
+    'datetime': fields.String(description='a Task Time', example='20231211150000'),
     'taskContent': fields.String(description='a Task', example='퀴즈풀기'),
+})
+
+task_model_with_seniorId = Task.inherit('Tasks with id', task_model , {
+    'seniorId': fields.String(description='a Senior User ID', required=True, example='123456'),
 })
 
 commUtil = CommUtil()
 
 @Task.route("")
 class TaskMain(Resource):
+
+    @Task.expect(task_model_with_seniorId)
     def post(self):
         req = request.get_json()
 
-        commUtil.insert(commUtil.col_notice, {
-            'seniorId': int(req['id']),
+        commUtil.insert(commUtil.col_task, {
+            'seniorId': int(req['seniorId']),
+            'datetime': req['datetime'],
+            'taskContent': req['taskContent']
         })
 
         return make_response({
-            'isLogin': True
+            'isSuccess': True
         }, 201)
 
 @Task.route("/<int:seniorId>")
