@@ -20,8 +20,8 @@ class CommUtil():
         col.insert_one(data)
     def update(self, col:Collation, origin, data):
         col.update_one(origin, {'$set': data})
-    def delete(self):
-        pass
+    def delete(self, col:Collation, data):
+        col.delete_one(data)
     def findOne(self, col:Collation, data):
         return col.find_one(data)
     def findList(self, col:Collation, data):

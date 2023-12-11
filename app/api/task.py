@@ -12,6 +12,7 @@ Task = Namespace(
 task_model = Task.model('Tasks', {
     'datetime': fields.String(description='a Task Time', example='20231211150000'),
     'taskContent': fields.String(description='a Task', example='퀴즈풀기'),
+    'check': fields.Boolean(description='is Alarm', example=True, default=True)
 })
 
 task_model_with_seniorId = Task.inherit('Tasks with id', task_model , {
@@ -19,6 +20,11 @@ task_model_with_seniorId = Task.inherit('Tasks with id', task_model , {
 })
 
 task_model_for_update = Task.inherit('Tasks for update', task_model_with_seniorId , {
+    'taskId': fields.String(description='a Task ID', required=True, example='123456'),
+})
+
+task_model_for_delete = Task.model('Tasks for delete', {
+    'seniorId': fields.String(description='a Senior User ID', required=True, example='123456'),
     'taskId': fields.String(description='a Task ID', required=True, example='123456'),
 })
 
@@ -43,7 +49,8 @@ class TaskMain(Resource):
             'taskId': taskId,
             'seniorId': int(req['seniorId']),
             'datetime': req['datetime'],
-            'taskContent': req['taskContent']
+            'taskContent': req['taskContent'],
+            'check': req['check'] or True
         })
 
         return make_response({
@@ -61,7 +68,29 @@ class TaskMain(Resource):
                 'taskId': int(req['taskId'])
             }, {
                 'datetime': req['datetime'],
-                'taskContent': req['taskContent']
+                'taskContent': req['taskContent'],
+                'check': req['check']
+            })
+
+            return make_response({
+                'isSuccess': True
+            }, 201)
+        except Exception as e:
+            print(e)
+        
+        return make_response({
+            'isSuccess': False
+        }, 201)
+    
+    @Task.expect(task_model_for_delete)
+    @Task.response(201, 'Success', response_model)
+    def delete(self):
+        req = request.get_json()
+
+        try:
+            commUtil.delete(commUtil.col_task, {
+                'seniorId': int(req['seniorId']),
+                'taskId': int(req['taskId'])
             })
 
             return make_response({
