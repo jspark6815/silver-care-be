@@ -6,6 +6,7 @@ from flask_socketio import SocketIO
 from api.auth import Auth
 from api.notice import Notice
 from api.task import Task
+from api.quiz import Quiz
 
 app = Flask(__name__)
 CORS(app, resources={r'*': {'origins': '*'}}) # Origin 전체 허용
@@ -22,6 +23,7 @@ api = Api(
 api.add_namespace(Auth, '/auth')
 api.add_namespace(Notice, '/notice')
 api.add_namespace(Task, '/task')
+api.add_namespace(Quiz, '/quiz')
 
 socketio = SocketIO(app)
 

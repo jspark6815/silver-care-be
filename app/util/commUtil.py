@@ -10,11 +10,7 @@ class CommUtil():
     def __init__(self):
         self.client = MongoClient(host=config['ip'], port=int(config['port']))
         self.db = self.client.silvercare
-        self.col_user = self.db.user
-        self.col_notice = self.db.notice
-        self.col_task = self.db.task
-
-        print(self.db)
+        self.col_user, self.col_notice, self.col_task, self.col_quiz = self.db.user, self.db.notice, self.db.task, self.db.quiz
 
     def insert(self, col:Collation, data):
         col.insert_one(data)
