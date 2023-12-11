@@ -55,9 +55,16 @@ class AuthSenior(Resource):
 
         print(user)
 
+        try:
+            return make_response({
+                'seniorName': user['seniorName'],
+                'isLogin': True
+            }, 201)
+        except Exception as e:
+            print(e)
         return make_response({
-            'seniorName': user['seniorName'],
-            'isLogin': True
+            'msg': 'auth failure',
+            'isLogin': False
         }, 201)
 
 @Auth.route("/guardian")
@@ -74,10 +81,18 @@ class AuthGuardian(Resource):
             'password': req['password']
         })
 
+        try:
+            return make_response({
+                'guardianName': user['guardianName'],
+                'seniorName': user['seniorName'],
+                'seniorId': user['seniorId'],
+                'isLogin': True
+            }, 201)
+        except Exception as e:
+            print(e)
         return make_response({
-            'guardianName': user['guardianName'],
-            'seniorName': user['seniorName'],
-            'isLogin': True
+            'msg': 'auth failure',
+            'isLogin': False
         }, 201)
 
 @Auth.route("/register")
