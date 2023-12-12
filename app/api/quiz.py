@@ -10,6 +10,7 @@ Quiz = Namespace(
 )
 
 quiz_model = Quiz.model('Quiz', {
+    'quizId': fields.String(description='a Quiz ID', required=True, example='123456'),
     'seniorId': fields.String(description='a Senior User ID', required=True, example='123456'),
     'question': fields.String(description='a Task', example='전일 운동을 간 시간은?'),
     'choices': fields.List(fields.String(description='a answer', example='2시'), required=True),
@@ -36,6 +37,7 @@ class QuizMain(Resource):
 
             for quiz in quizList:
                 rtn_list.append({
+                    'quizId': quiz['quizId'],
                     'question': quiz['question'],
                     'choices': quiz['choices'],
                     'answer': quiz['answer']
@@ -48,3 +50,8 @@ class QuizMain(Resource):
         return make_response({
             'isSuccess': False
         }, 201)
+
+@Quiz.route("/<int:seniorId>/<int:quizId>")
+class SolveQuiz(Resource):
+    def post(self):
+        pass

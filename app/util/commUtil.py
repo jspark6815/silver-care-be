@@ -18,6 +18,8 @@ class CommUtil():
         col.update_one(origin, {'$set': data})
     def delete(self, col:Collation, data):
         col.delete_one(data)
+    def delete_many(self, col:Collation, data):
+        col.delete_many(data)
     def findOne(self, col:Collation, data):
         return col.find_one(data)
     def findList(self, col:Collation, data):
