@@ -41,14 +41,23 @@ class NoticeReceiver(Resource):
     """Notice Receiver"""
 
     def get(self, seniorId):
-        notice = commUtil.findOne(commUtil.col_notice, {
-            'seniorId': seniorId,
-        })
-        
-        commUtil.delete_many(commUtil.col_notice, {
-            'seniorId': seniorId,
-        })
 
+        try:
+            notice = commUtil.findOne(commUtil.col_notice, {
+                'seniorId': seniorId,
+            })
+            
+            commUtil.delete_many(commUtil.col_notice, {
+                'seniorId': seniorId,
+            })
+
+            return make_response({
+                'isSuccess': True,
+                'msg': notice['msg'],
+            }, 201)
+        except:
+            pass
         return make_response({
-           'msg': notice['msg'],
+            'isSuccess': False,
+            'msg': '',
         }, 201)
